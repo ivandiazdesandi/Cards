@@ -1,0 +1,173 @@
+/**********ID Selectors*********/
+
+#title{
+    background-color: #030219;
+    position: relative;
+}
+
+#features{
+    text-align: center;
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+#testimonials{
+    text-align: center;
+    background-color: #0E0613;
+    color: #fff;
+}
+
+#press{
+    text-align: center;
+    background-color: #0E0613;
+    padding-bottom: 3%;
+}
+
+#pricing{
+    padding: 100px;
+    text-align: center;
+}
+
+#cta{
+    text-align: center;
+    padding: 7% 20%;
+    background-color: #030219;
+}
+
+#footer{
+    text-align: center;
+    padding: 5%;
+}
+
+/**********Class Selectors*********/
+
+.header1{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1.5;
+    color: aliceblue;
+    padding-bottom: 30px;
+    font-weight: 900;
+}
+.container-fluid{
+    padding: 3% 15%;
+}
+.container-fluid{
+    font-family: 'Montserrat', sans-serif;
+}
+.title-image{
+    width: 22%;
+    transform: rotate(-25deg);
+    position: absolute;
+    right: 22%;
+}
+
+.fa-heart:hover{
+    color:#ff4c68 !important;
+ }
+
+ .fa-bullseye:hover{
+    color:#D71313 !important;
+ }
+
+ .fa-circle-check:hover{
+    color:#7DCE13 !important;
+ }
+
+ 
+ .indicez{
+    padding-bottom: 8.5%;
+ }
+/**********Navbar*********/
+
+.navbar{
+    padding-bottom: 0 0 4.5rem;
+}
+
+.navbar-brand{
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+.nav-item{
+    padding: 0 18px;
+}
+
+.icon{
+    color: #393053; 
+    padding-bottom: 1rem;
+}
+
+.ventajas{
+    padding-bottom: 3rem; 
+    padding-top: 3rem;
+}
+
+.parra{
+    width: 70%; 
+    margin: auto; 
+    color: #000000;
+}
+
+.testimonial-image{
+    width: 10%;
+    border-radius: 100%;
+    margin: 20px;
+}
+
+.press-logo{
+    width: 15%;
+    margin: 20px 20px 50px;
+}
+
+.carousel-item{
+    padding: 7% 15%;
+}
+
+.botones{
+    width: 100%;
+}
+
+.pricing-column{
+    padding: 3% 2%;
+}
+
+.footer-h3{
+    font-family: 'Montserrat';
+    font-size: 3rem;
+    line-height: 1.5;
+    font-weight: bold;
+    color: #fff;
+    padding-bottom: 7%;
+    width: 100%;
+}
+
+.pie{
+    padding: 10px 8px;
+}
+/**********Todo*********/
+h3{
+    font-family: 'Montserrat-Bold', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+h2{
+    font-family: 'Montserrat';
+    font-size: 3rem;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+
+/**********Media Query*********/
+
+
+@media (max-width: 990.40px) {
+    .title-image{
+        transform: rotate(0deg);
+        position: static;
+        width: 50%;
+    }
+}
