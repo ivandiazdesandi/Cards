@@ -32,8 +32,8 @@ const camera = new THREE.PerspectiveCamera(
   3000
 );
 camera.position.z = 150;
-camera.near = 10;
-camera.far = 20;
+camera.near = 1;
+camera.far = 2000;
 
 // CONTROLS
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -112,7 +112,7 @@ mtlLoader.load("./3d_model/gcc.mtl", (materials) => {
     card.scale.set(13, 13, 13);
     scene.add(card);
     object.traverse((node) => {
-      if (node.isMesh) node.material.envMap = tnewEnvMap;
+      if (node.isMesh) node.material.envMap = newEnvMap;
     });
   });
 });
