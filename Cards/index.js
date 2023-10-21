@@ -5,6 +5,7 @@ import { OBJLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm
 import { MTLLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/MTLLoader.js";
 import { RGBELoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/RGBELoader.js";
 import { FlakesTexture } from "https://cdn.jsdelivr.net/npm/three@0.118.3/examples/jsm/textures/FlakesTexture.js";
+
 //SCENE
 let newEnvMap;
 const scene = new THREE.Scene();
@@ -39,8 +40,8 @@ camera.far = 2000;
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.autoRotate = true;
 controls.autoRotateSpeed = 4;
-controls.enablePan = true;
-controls.enableZoom = true;
+controls.enablePan = false;
+controls.enableZoom = false;
 controls.enableRotate = true;
 // controls.minPolarAngle = .1; // radians
 // controls.maxPolarAngle = 1; // radians
