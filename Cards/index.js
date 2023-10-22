@@ -38,7 +38,7 @@ camera.far = 2000;
 
 // CONTROLS
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.autoRotate = true;
+controls.autoRotate = false;
 controls.autoRotateSpeed = 4;
 controls.enablePan = false;
 controls.enableZoom = false;
@@ -107,9 +107,10 @@ mtlLoader.load("./3d_model/gcc.mtl", (materials) => {
   loader.setMaterials(materials);
   loader.load("./3d_model/gcc.obj", (object) => {
     card = object;
-    card.rotateX(0);
-    card.rotateY(0);
-    card.rotateZ(100);
+    // card.rotateX(100);
+    // card.rotateY(100);
+    // card.rotateZ(100);
+    console.log("Card Rotation");
     card.scale.set(13, 13, 13);
     scene.add(card);
     object.traverse((node) => {
@@ -126,12 +127,24 @@ function render() {
   requestAnimationFrame(render);
 }
 
+//EVENT LISTENERS
 window.addEventListener(
   "resize",
   function () {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth/2, window.innerHeight/2);
+  },
+  false
+);
+
+window.addEventListener(
+  "mousemove",
+  function (mouse) {
+    card.rotation.y = (THREE.MathUtils.lerp(card.rotation.y, (( mouse.x - (window.innerWidth / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
+    card.rotation.x = (THREE.MathUtils.lerp(card.rotation.x, (( mouse.y - (window.innerWidth / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
+    console.log(card.rotation.y);
+    //card.rotateZ(100);
   },
   false
 );
