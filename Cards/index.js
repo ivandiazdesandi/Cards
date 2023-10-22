@@ -138,11 +138,11 @@ window.addEventListener(
   false
 );
 
-window.addEventListener(
+canvas.addEventListener(
   "mousemove",
   function (mouse) {
     card.rotation.y = (THREE.MathUtils.lerp(card.rotation.y, (( mouse.x - (window.innerWidth / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
-    card.rotation.x = (THREE.MathUtils.lerp(card.rotation.x, (( mouse.y - (window.innerWidth / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
+    card.rotation.x = (THREE.MathUtils.lerp(card.rotation.x, (( mouse.y - (window.innerHeight / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
     console.log(card.rotation.y);
     //card.rotateZ(100);
   },
