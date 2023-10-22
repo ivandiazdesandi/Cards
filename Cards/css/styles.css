@@ -1,11 +1,13 @@
 /**********ID Selectors*********/
 
 #title{
-    background-color: #030219;
     position: relative;
 }
 
 #canvas{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -18,7 +20,8 @@
 
 #features{
     text-align: center;
-    background-color: #fff;
+    /*background-color: #fff;*/
+    backdrop-filter: blur(2px);
     position: relative;
     z-index: 1;
 }
@@ -98,6 +101,7 @@
  .indicez{
     padding-bottom: 8.5%;
  }
+
 /**********Navbar*********/
 
 .navbar{
@@ -114,7 +118,7 @@
 }
 
 .icon{
-    color: #393053; 
+    color: #747800; 
     padding-bottom: 1rem;
 }
 
@@ -126,7 +130,7 @@
 .parra{
     width: 70%; 
     margin: auto; 
-    color: #000000;
+    color: #fff;
 }
 
 .testimonial-image{
@@ -170,6 +174,7 @@ h3{
     font-family: 'Montserrat-Bold', sans-serif;
     font-size: 1.5rem;
     font-weight: bold;
+    color: #b0a566;
 }
 
 h2{
@@ -183,10 +188,10 @@ h2{
 /**********Media Query*********/
 
 
-@media (max-width: 990.40px) {
+/*@media (max-width: 990.40px) {
     .title-image{
         transform: rotate(0deg);
         position: static;
         width: 50%;
     }
-}
+}*/
