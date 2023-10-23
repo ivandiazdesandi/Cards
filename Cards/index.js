@@ -32,7 +32,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   3000
 );
-camera.position.z = 150;
+camera.position.z = 80;
 camera.near = 1;
 camera.far = 2000;
 
