@@ -42,7 +42,7 @@ controls.autoRotate = false;
 controls.autoRotateSpeed = 4;
 controls.enablePan = false;
 controls.enableZoom = false;
-controls.enableRotate = true;
+controls.enableRotate = false;
 // controls.minPolarAngle = .1; // radians
 // controls.maxPolarAngle = 1; // radians
 // controls.minAzimuthAngle = .1; // radians
@@ -67,32 +67,42 @@ spotLight2.shadow.camera.near = 500;
 spotLight2.shadow.camera.far = 4000;
 spotLight2.shadow.camera.fov = 70;
 scene.add(spotLight2);
-
-//scene.background = null;
+const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+scene.add( light );
 
 //REFLECTION
- let pmremGenerator = new THREE.PMREMGenerator(renderer);
+let hdrCubeRenderTarget;
+let pmremGenerator = new THREE.PMREMGenerator(renderer);
+// Function to load the HDR environment map and return a Promise
+function loadEnvMap() {
+  return new Promise((resolve, reject) => {
+    new RGBELoader().load('images/test.hdr', (hdrEquiRect, textureData) => {
+      hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
+      pmremGenerator.compileCubemapShader();
+      newEnvMap = hdrCubeRenderTarget.texture;
+      renderer.toneMapping = THREE.LinearToneMapping;
+      renderer.toneMappingExposure = 0.5;
+      resolve(); // Resolve the Promise when the map is loaded
+    });
+  });
+}
+// Asynchronous function to set up the scene
+async function setupScene() {
+  console.log("Setting up the scene...");
 
-// new RGBELoader().setPath('images/').load('cayley_interior_4k.hdr', function(hdrmap) {
-//    //...
-   
-//    let envmap = envmaploader,fromCubemap(hdrmap);
-//    const ballMaterial = {
-//     //...
-//     envMap: envmap.texture
-//   };
-// });
+  // Wait for the environment map to be loaded
+  await loadEnvMap();
 
-new RGBELoader()
-.load('cayley_interior_4k.hdr', (hdrEquiRect, textureData) => {
-        hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
-        pmremGenerator.compileCubemapShader();
+  console.log("Environment map is loaded and ready.");
 
-        scene.background = hdrCubeRenderTarget.texture;
-        newEnvMap = hdrCubeRenderTarget.texture;
-        renderer.toneMapping = LinearToneMapping;
-        renderer.toneMappingExposure = 0.5;
-});
+  // Now you can create materials or apply the environment map to objects
+  const basicMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+    metalness: 1,
+    roughness: 0,
+    envMap: newEnvMap,
+    envMapIntensity: 1,
+  });
 
 var textureLoader = new THREE.TextureLoader();
 var texture = textureLoader.load('./images/Steel.jpg');
@@ -110,11 +120,20 @@ mtlLoader.load("./3d_model/gcc.mtl", (materials) => {
     // card.rotateX(100);
     // card.rotateY(100);
     // card.rotateZ(100);
-    console.log("Card Rotation");
     card.scale.set(13, 13, 13);
     scene.add(card);
     object.traverse((node) => {
-      if (node.isMesh) node.material.envMap = newEnvMap;
+      if (node.isMesh) {
+        node.material = basicMaterial;
+        if (node.material.isMeshStandardMaterial) {
+          // Modify the metalness and roughness properties
+          // node.material.metalness = 1; // Change to your desired value (between 0 and 1)
+          // node.material.roughness = 0.1; // Change to your desired value (between 0 and 1)
+        }
+        // Set the environment map for the material
+        // node.material.envMap = newEnvMap; // Assuming newEnvMap holds the HDR environment map
+        // node.material.envMapIntensity = 1; // You can adjust the intensity as needed
+      }
     });
   });
 });
@@ -143,8 +162,12 @@ canvas.addEventListener(
   function (mouse) {
     card.rotation.y = (THREE.MathUtils.lerp(card.rotation.y, (( mouse.x - (window.innerWidth / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
     card.rotation.x = (THREE.MathUtils.lerp(card.rotation.x, (( mouse.y - (window.innerHeight / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
-    console.log(card.rotation.y);
-    //card.rotateZ(100);
   },
   false
 );
+
+requestAnimationFrame(render);
+}
+
+// Call the setupScene function to begin setting up the scene
+setupScene();
