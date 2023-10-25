@@ -32,7 +32,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   3000
 );
-camera.position.z = 80;
+camera.position.z = 7;
 camera.near = 1;
 camera.far = 2000;
 
@@ -120,7 +120,7 @@ mtlLoader.load("./3d_model/gcc.mtl", (materials) => {
     // card.rotateX(100);
     // card.rotateY(100);
     // card.rotateZ(100);
-    card.scale.set(13, 13, 13);
+    //card.scale.set(13, 13, 13);
     scene.add(card);
     object.traverse((node) => {
       if (node.isMesh) {
@@ -160,8 +160,8 @@ window.addEventListener(
 canvas.addEventListener(
   "mousemove",
   function (mouse) {
-    card.rotation.y = (THREE.MathUtils.lerp(card.rotation.y, (( mouse.x - (window.innerWidth / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
-    card.rotation.x = (THREE.MathUtils.lerp(card.rotation.x, (( mouse.y - (window.innerHeight / 2) ) * Math.PI) / 7000, 0.1)) - 0.01;
+    card.rotation.y = (THREE.MathUtils.lerp(card.rotation.y, (( mouse.x - (window.innerWidth / 1.7) ) * Math.PI) / 3000, 0.1)) - 0.01;
+    card.rotation.x = (THREE.MathUtils.lerp(card.rotation.x, (( mouse.y - (window.innerHeight / 2.3) ) * Math.PI) / 3000, 0.1)) - 0.01;
   },
   false
 );
