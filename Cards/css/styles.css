@@ -196,3 +196,12 @@ h2{
         width: 50%;
     }
 }*/
+
+.image-container {
+    position: relative; /* Make sure it has a position set */
+  }
+  
+  #fade-in-out-image {
+    opacity: 0; /* Hide the image initially */
+    transition: opacity 0.5s; /* Add a smooth transition effect */
+  }

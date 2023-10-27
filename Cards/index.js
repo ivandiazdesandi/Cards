@@ -1,3 +1,38 @@
+const image = document.getElementById("fade-in-out-image");
+let lastScrollTop = 0;
+
+function isElementInViewport(element) {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <=
+      (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
+function fadeInOutOnScroll() {
+  const st = window.pageYOffset || document.documentElement.scrollTop;
+
+  if (st > lastScrollTop) {
+    // Scrolling down
+    if (isElementInViewport(image) && image.style.opacity !== "1") {
+      image.style.opacity = "1";
+    }
+  } else {
+    // Scrolling up
+    if (!isElementInViewport(image) && image.style.opacity !== "0") {
+      image.style.opacity = "0";
+    }
+  }
+
+  lastScrollTop = st;
+}
+
+window.addEventListener("scroll", fadeInOutOnScroll);
+fadeInOutOnScroll();
 // IMPORTS
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js";
