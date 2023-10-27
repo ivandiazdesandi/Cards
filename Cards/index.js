@@ -100,15 +100,11 @@ async function setupScene() { // Asynchronous function to set up the scene
     },
     
     function ( xhr ) { // called while loading is progressing
-
       console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
     },
     
     function ( error ) { // called when loading has errors
-
       console.log( 'An error happened' );
-
     }
 );
 
