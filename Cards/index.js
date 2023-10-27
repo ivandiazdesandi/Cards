@@ -82,7 +82,7 @@ async function setupScene() { // Asynchronous function to set up the scene
 
   let card; // Load a glTF resource
   loader2.load(
-    'models/credit card.glb',
+    'models/credit card.gltf',
     function ( gltf ) {
 
       scene.add( gltf.scene );
