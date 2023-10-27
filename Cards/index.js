@@ -5,10 +5,9 @@ import { OBJLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm
 import { MTLLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/MTLLoader.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/RGBELoader.js";
-import { FlakesTexture } from "https://cdn.jsdelivr.net/npm/three@0.118.3/examples/jsm/textures/FlakesTexture.js";
 
 //SCENE
-let newEnvMap;
+let newEnvMap; //Environment map
 const scene = new THREE.Scene();
 
 //RENDERER
@@ -50,77 +49,14 @@ controls.enableRotate = false;
 // controls.maxAzimuthAngle = 1; // radians
 
 //LIGHTS
-// const spotLight = new THREE.SpotLight(0xffffff);
-// //spotLight.position.set(0, 5, 25);
-// spotLight.position.set(0, 0, 100);
-
-// spotLight.castShadow = true;
-// spotLight.shadow.mapSize.width = 1024;
-// spotLight.shadow.mapSize.height = 1024;
-// spotLight.shadow.camera.near = 500;
-// spotLight.shadow.camera.far = 4000;
-// spotLight.shadow.camera.fov = 70;
-// scene.add(spotLight);
-// const spotLight2 = new THREE.SpotLight(0xffffff);
-// spotLight2.position.set(0, -40, -25);
-// spotLight2.castShadow = true;
-// spotLight2.shadow.mapSize.width = 1024;
-// spotLight2.shadow.mapSize.height = 1024;
-// spotLight2.shadow.camera.near = 500;
-// spotLight2.shadow.camera.far = 4000;
-// spotLight2.shadow.camera.fov = 70;
-// scene.add(spotLight2);
 const light = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add( light );
-
-
-//TESTING
-// Instantiate a loader
-const loader = new GLTFLoader();
-
-// Optional: Provide a DRACOLoader instance to decode compressed mesh data
-// const dracoLoader = new DRACOLoader();
-// dracoLoader.setDecoderPath( '/examples/jsm/libs/draco/' );
-// loader.setDRACOLoader( dracoLoader );
-
-// Load a glTF resource
-loader.load(
-	// resource URL
-	'3d_model/credit card.glb',
-	// called when the resource is loaded
-	function ( gltf ) {
-
-		scene.add( gltf.scene );
-
-		gltf.animations; // Array<THREE.AnimationClip>
-		gltf.scene; // THREE.Group
-		gltf.scenes; // Array<THREE.Group>
-		gltf.cameras; // Array<THREE.Camera>
-		gltf.asset; // Object
-    gltf.material.envMap = newEnvMap;
-
-	},
-	// called while loading is progressing
-	function ( xhr ) {
-
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-	},
-	// called when loading has errors
-	function ( error ) {
-
-		console.log( 'An error happened' );
-
-	}
-);
-/////////
-
 
 //REFLECTION
 let hdrCubeRenderTarget;
 let pmremGenerator = new THREE.PMREMGenerator(renderer);
-// Function to load the HDR environment map and return a Promise
-function loadEnvMap() {
+
+function loadEnvMap() { // Function to load the HDR environment map and return a Promise
   return new Promise((resolve, reject) => {
     new RGBELoader().load('images/test.hdr', (hdrEquiRect, textureData) => {
       hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
@@ -132,57 +68,49 @@ function loadEnvMap() {
     });
   });
 }
-// Asynchronous function to set up the scene
-async function setupScene() {
+
+async function setupScene() { // Asynchronous function to set up the scene
   console.log("Setting up the scene...");
-
-  // Wait for the environment map to be loaded
-  await loadEnvMap();
-
+  await loadEnvMap(); // Wait for the environment map to be loaded
   console.log("Environment map is loaded and ready.");
+  const loader2 = new GLTFLoader();
 
-  // Now you can create materials or apply the environment map to objects
-  const basicMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffff00,
-    metalness: 1,
-    roughness: 0,
-    envMap: newEnvMap,
-    envMapIntensity: 1,
-  });
+  // Optional: Provide a DRACOLoader instance to decode compressed mesh data
+  // const dracoLoader = new DRACOLoader();
+  // dracoLoader.setDecoderPath( '/examples/jsm/libs/draco/' );
+  // loader.setDRACOLoader( dracoLoader );
 
-var textureLoader = new THREE.TextureLoader();
-var texture = textureLoader.load('./images/Steel.jpg');
-texture.mapping = THREE.EquirectangularReflectionMapping;
+  let card; // Load a glTF resource
+  loader2.load(
+    'models/credit card.glb',
+    function ( gltf ) {
 
-// OBJECT
-const loader = new OBJLoader();
-const mtlLoader = new MTLLoader();
-let card;
-mtlLoader.load("./3d_model/gcc.mtl", (materials) => {
-  materials.preload();
-  loader.setMaterials(materials);
-  loader.load("./3d_model/gcc.obj", (object) => {
-    card = object;
-    // card.rotateX(100);
-    // card.rotateY(100);
-    // card.rotateZ(100);
-    //card.scale.set(13, 13, 13);
-    ///scene.add(card);
-    object.traverse((node) => {
-      if (node.isMesh) {
-        node.material = basicMaterial;
-        if (node.material.isMeshStandardMaterial) {
-          // Modify the metalness and roughness properties
-          // node.material.metalness = 1; // Change to your desired value (between 0 and 1)
-          // node.material.roughness = 0.1; // Change to your desired value (between 0 and 1)
-        }
-        // Set the environment map for the material
-        // node.material.envMap = newEnvMap; // Assuming newEnvMap holds the HDR environment map
-        // node.material.envMapIntensity = 1; // You can adjust the intensity as needed
-      }
-    });
-  });
-});
+      scene.add( gltf.scene );
+
+      gltf.animations; // Array<THREE.AnimationClip>
+      gltf.scene; // THREE.Group
+      gltf.scenes; // Array<THREE.Group>
+      gltf.cameras; // Array<THREE.Camera>
+      gltf.asset; // Object
+
+      scene.environment = newEnvMap;
+
+      card = gltf.scene;
+
+    },
+    
+    function ( xhr ) { // called while loading is progressing
+
+      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+    },
+    
+    function ( error ) { // called when loading has errors
+
+      console.log( 'An error happened' );
+
+    }
+);
 
 //RENDER LOOP
 requestAnimationFrame(render);
@@ -215,5 +143,4 @@ canvas.addEventListener(
 requestAnimationFrame(render);
 }
 
-// Call the setupScene function to begin setting up the scene
-setupScene();
+setupScene(); // Call the setupScene function to begin setting up the scene
