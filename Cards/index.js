@@ -1,8 +1,6 @@
 // IMPORTS
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js";
-import { OBJLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/OBJLoader.js";
-import { MTLLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/MTLLoader.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/RGBELoader.js";
 
@@ -43,10 +41,6 @@ controls.autoRotateSpeed = 4;
 controls.enablePan = false;
 controls.enableZoom = false;
 controls.enableRotate = false;
-// controls.minPolarAngle = .1; // radians
-// controls.maxPolarAngle = 1; // radians
-// controls.minAzimuthAngle = .1; // radians
-// controls.maxAzimuthAngle = 1; // radians
 
 //LIGHTS
 const light = new THREE.AmbientLight( 0x404040 ); // soft white light
@@ -69,77 +63,97 @@ function loadEnvMap() { // Function to load the HDR environment map and return a
   });
 }
 
-async function setupScene() { // Asynchronous function to set up the scene
+async function setupScene() {
   console.log("Setting up the scene...");
-  await loadEnvMap(); // Wait for the environment map to be loaded
+  await loadEnvMap();
   console.log("Environment map is loaded and ready.");
-  const loader2 = new GLTFLoader();
 
-  // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-  // const dracoLoader = new DRACOLoader();
-  // dracoLoader.setDecoderPath( '/examples/jsm/libs/draco/' );
-  // loader.setDRACOLoader( dracoLoader );
+  const loader = new GLTFLoader();
 
-  let card; // Load a glTF resource
-  loader2.load(
-    'models/MatteBlackSilver.gltf',
-    function ( gltf ) {
+  // Define an array of models with their respective paths
+  const modelsToLoad = [
+    { path: 'models/MatteBlackSilver.gltf', position: new THREE.Vector3(0, 0, 0), visibility: true, name: "Black Matte - Silver Background"},
+    { path: 'models/credit card.gltf', position: new THREE.Vector3(0, 0, 0), visibility: false, name: "Shiny Gold 24k"}, // Add more models with their paths and positions
+    // Add more models as needed
+  ];
 
-      scene.add( gltf.scene );
+  const loadedModels = []; // Array to store loaded models
 
-      gltf.animations; // Array<THREE.AnimationClip>
-      gltf.scene; // THREE.Group
-      gltf.scenes; // Array<THREE.Group>
-      gltf.cameras; // Array<THREE.Camera>
-      gltf.asset; // Object
+  // Load all models
+  modelsToLoad.forEach((modelInfo) => {
+    loader.load(
+      modelInfo.path,
+      function (gltf) {
+        gltf.scene.visible = modelInfo.visibility;
+        scene.add(gltf.scene);
+        gltf.scene.position.copy(modelInfo.position);
+        loadedModels.push(gltf.scene);
+      },
+      function (xhr) {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+      },
+      function (error) {
+        console.error('An error happened', error);
+      }
+    );
+  });
 
-      scene.environment = newEnvMap;
+  // Update the scene environment with the loaded environment map
+  scene.environment = newEnvMap;
 
-      card = gltf.scene;
+  // Render loop
+  function render() {
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
 
-    },
-    
-    function ( xhr ) { // called while loading is progressing
-      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    
-    function ( error ) { // called when loading has errors
-      console.log( 'An error happened' );
-    }
-);
-
-//RENDER LOOP
-requestAnimationFrame(render);
-function render() {
-  controls.update();
-  renderer.render(scene, camera);
   requestAnimationFrame(render);
+
+  // Event listeners
+  window.addEventListener(
+    'resize',
+    function () {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+    },
+    false
+  );
+
+  // Modify object rotation based on mouse movement
+  canvas.addEventListener(
+    'mousemove',
+    function (mouse) {
+      loadedModels.forEach((model) => {
+        model.rotation.y = THREE.MathUtils.lerp(
+          model.rotation.y,
+          ((mouse.x - window.innerWidth / 1.7) * Math.PI) / 3000,
+          0.1
+        ) - 0.01;
+        model.rotation.x = THREE.MathUtils.lerp(
+          model.rotation.x,
+          ((mouse.y - window.innerHeight / 2.3) * Math.PI) / 3000,
+          0.1
+        ) - 0.01;
+      });
+    },
+    false
+  );
+
+  // Function to toggle models' visibility
+  document.getElementById('toggleButton').addEventListener(
+    'click', 
+    function toggleModelsVisibility() {
+      loadedModels.forEach((model) => {
+      model.visible = !model.visible;
+      });
+    }
+  );
+
 }
 
-//EVENT LISTENERS
-window.addEventListener(
-  "resize",
-  function () {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth/2, window.innerHeight/2);
-  },
-  false
-);
-
-canvas.addEventListener(
-  "mousemove",
-  function (mouse) {
-    card.rotation.y = (THREE.MathUtils.lerp(card.rotation.y, (( mouse.x - (window.innerWidth / 1.7) ) * Math.PI) / 3000, 0.1)) - 0.01;
-    card.rotation.x = (THREE.MathUtils.lerp(card.rotation.x, (( mouse.y - (window.innerHeight / 2.3) ) * Math.PI) / 3000, 0.1)) - 0.01;
-  },
-  false
-);
-
-requestAnimationFrame(render);
-}
-
-setupScene(); // Call the setupScene function to begin setting up the scene
+setupScene();
 
 
 // Hover changes
