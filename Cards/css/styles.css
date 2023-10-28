@@ -28,13 +28,13 @@
 
 #testimonials{
     text-align: center;
-    background-color: #0E0613;
+    /*background-color: #0E0613;*/
     color: #fff;
 }
 
 #press{
     text-align: center;
-    background-color: #0E0613;
+    /*background-color: #0E0613;*/
     padding-bottom: 3%;
 }
 
@@ -46,7 +46,7 @@
 #cta{
     text-align: center;
     padding: 7% 20%;
-    background-color: #030219;
+    /*background-color: #030219;*/
 }
 
 #footer{
@@ -119,9 +119,8 @@
 }
 
 .icon{
-    color: #747800; 
     padding-bottom: 1rem;
-    background: linear-gradient(to right, #eeff00, #d1c300);
+    background: linear-gradient(90deg, #bf9a47 0%, #ffe233 25%, #c7801d 50%, #ffe233 75%, #bf9a47 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -173,7 +172,9 @@
 .pie{
     padding: 10px 8px;
 }
+
 /**********Todo*********/
+
 h3{
     font-family: 'Montserrat-Bold', sans-serif;
     font-size: 1.5rem;

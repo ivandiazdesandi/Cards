@@ -140,3 +140,8 @@ requestAnimationFrame(render);
 }
 
 setupScene(); // Call the setupScene function to begin setting up the scene
+
+
+// Hover changes
+
+document.querySelector
