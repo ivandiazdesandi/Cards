@@ -121,6 +121,9 @@
 .icon{
     color: #747800; 
     padding-bottom: 1rem;
+    background: linear-gradient(to right, #eeff00, #d1c300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .ventajas{
