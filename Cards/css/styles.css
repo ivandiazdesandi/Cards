@@ -103,6 +103,14 @@
     padding-bottom: 8.5%;
  }
 
+ .cardcolorbtn{
+    margin: 10px;
+ }
+
+ .titleRight{
+    text-align: right;
+ }
+
 /**********Navbar*********/
 
 .navbar{
@@ -193,10 +201,8 @@ h2{
 /**********Media Query*********/
 
 
-/*@media (max-width: 990.40px) {
-    .title-image{
-        transform: rotate(0deg);
-        position: static;
-        width: 50%;
-    }
-}*/
+@media (max-width: 990.40px) {
+    .titleRight{
+        text-align: center;
+     }
+}
