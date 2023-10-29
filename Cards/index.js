@@ -85,6 +85,7 @@ async function setupScene() {
       modelInfo.path,
       function (gltf) {
         gltf.scene.visible = modelInfo.visibility;
+        gltf.scene.name = modelInfo.name;
         scene.add(gltf.scene);
         gltf.scene.position.copy(modelInfo.position);
         loadedModels.push(gltf.scene);
@@ -142,11 +143,23 @@ async function setupScene() {
   );
 
   // Function to toggle models' visibility
-  document.getElementById('toggleButton').addEventListener(
+  document.getElementById('goldButton').addEventListener(
     'click', 
     function toggleModelsVisibility() {
       loadedModels.forEach((model) => {
-      model.visible = !model.visible;
+        if (model.name === "Shiny Gold 24k") model.visible = true;
+        else model.visible = false;
+      });
+    }
+  );
+
+  // Function to toggle models' visibility
+  document.getElementById('blackButton').addEventListener(
+    'click', 
+    function toggleModelsVisibility() {
+      loadedModels.forEach((model) => {
+        if (model.name === "Black Matte - Silver Background") model.visible = true;
+        else model.visible = false;
       });
     }
   );
