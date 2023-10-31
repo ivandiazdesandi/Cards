@@ -181,6 +181,16 @@
     padding: 10px 8px;
 }
 
+.footer-h5{
+    color: #fff;
+    padding-bottom: 8%;
+}
+
+.ghif{
+    width:200px;
+    height:200px;
+    margin-bottom: 40px;
+}
 /**********Todo*********/
 
 h3{
